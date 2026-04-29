@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NIVORA-RP STORE</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:radial-gradient(circle,#120018,#000);
+color:#fff;
+overflow-x:hidden;
+}
+
+.container{max-width:900px;margin:auto;padding:20px}
+
+h1{
+text-align:center;
+text-shadow:0 0 10px #ff00ff,0 0 20px #00ffff;
+}
+
+/* BOX */
+.box{
+background:rgba(0,0,0,.6);
+padding:15px;
+border-radius:12px;
+margin-bottom:10px;
+border:1px solid rgba(255,255,255,.1);
+}
+
+/* BOTÕES */
+button{
+padding:8px 12px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+margin:4px;
+transition:.2s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+.green{background:#00ff88}
+.red{background:#ff3366}
+.gold{background:linear-gradient(90deg,#ffcc00,#ff6600);color:#000}
+
+/* CARRINHO */
+.cart{
+position:fixed;
+right:10px;
+top:10px;
+width:250px;
+background:rgba(0,0,0,.7);
+padding:15px;
+border-radius:12px;
+border:1px solid #00ffff55;
+}
+
+/* FLOAT ANIMATION */
+.float{
+position:fixed;
+font-weight:bold;
+color:#00ffcc;
+animation:up 1s ease-out forwards;
+pointer-events:none;
+}
+
+@keyframes up{
+0%{transform:translateY(0);opacity:1}
+100%{transform:translateY(-80px);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔥 NIVORA-RP STORE 🔥</h1>
+
+<!-- CASH -->
+<div class="box">
+<h3>💵 CASH (1000 = R$1)</h3>
+
+<button class="red" onclick="changeCash(-1)">-</button>
+<span id="cash">1000</span>
+<button class="green" onclick="changeCash(1)">+</button>
+</div>
+
+<!-- COINS -->
+<div class="box">
+<h3>🪙 COINS (1 = R$10)</h3>
+
+<button class="red" onclick="changeCoins(-1)">-</button>
+<span id="coins">1</span>
+<button class="green" onclick="changeCoins(1)">+</button>
+</div>
+
+</div>
+
+<!-- CARRINHO -->
+<div class="cart">
+<h3>🛒 Carrinho</h3>
+
+💵 Cash: R$ <span id="cashVal">0</span><br>
+🪙 Coins: R$ <span id="coinsVal">0</span><br><br>
+
+💰 Total: R$ <span id="total">0</span><br><br>
+
+<select id="seller">
+<option value="anjo">7AnjoX</option>
+<option value="biel">7BielX</option>
+</select>
+
+<br><br>
+
+<button class="green" onclick="checkout()">COMPRAR AGORA</button>
+</div>
+
+<script>
+
+let cash=1000;
+let coins=1;
+
+let cashValue=0;
+let coinsValue=0;
+
+/* CASH */
+function changeCash(v){
+cash=Math.max(1000,cash+(v*1000));
+showFloat("💵 "+cash);
+update();
+}
+
+/* COINS */
+function changeCoins(v){
+coins=Math.max(1,coins+v);
+showFloat("🪙 "+coins);
+update();
+}
+
+/* FLOAT */
+function showFloat(text){
+let el=document.createElement("div");
+el.className="float";
+el.innerText=text;
+
+el.style.left=Math.random()*window.innerWidth+"px";
+el.style.top=(window.innerHeight/2)+"px";
+
+document.body.appendChild(el);
+
+setTimeout(()=>el.remove(),1000);
+}
+
+/* UPDATE */
+function update(){
+
+document.getElementById("cash").innerText=cash;
+document.getElementById("coins").innerText=coins;
+
+cashValue=cash/1000;
+coinsValue=coins*10;
+
+document.getElementById("cashVal").innerText=cashValue.toFixed(2);
+document.getElementById("coinsVal").innerText=coinsValue.toFixed(2);
+
+document.getElementById("total").innerText=
+(cashValue+coinsValue).toFixed(2);
+}
+
+/* CHECKOUT */
+function checkout(){
+
+let seller=document.getElementById("seller").value;
+
+let link=seller==="biel"
+?"https://wa.me/5534991116468?text="
+:"https://wa.me/5544991148268?text=";
+
+let msg="🛒 COMPRA NIVORA-RP%0A%0A";
+msg+="💵 Cash: R$"+cashValue.toFixed(2)+"%0A";
+msg+="🪙 Coins: R$"+coinsValue.toFixed(2)+"%0A";
+msg+="💰 Total: R$"+(cashValue+coinsValue).toFixed(2);
+
+window.open(link+encodeURIComponent(msg),"blank");
+}
+
+update();
+
+</script>
+
+</body>
+</html>
